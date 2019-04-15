@@ -4,15 +4,15 @@ const path = require("path");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
 
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
-
-io.on('connection', socket => {
+io.on("connection", socket => {
     console.log("ok");
-    socket.on('connectRoom', box => {
+    socket.on("connectRoom", box => {
         socket.join(box);
     })
 });
@@ -24,7 +24,7 @@ mongoose.connect('mongodb+srv://bateradt:bateradt@cluster0-wiwwy.mongodb.net/tch
 
 app.use((req, res, next) => {
     req.io = io;
-    return next;
+    return next();
 });
 
 app.use(express.json());
